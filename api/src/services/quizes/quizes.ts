@@ -10,24 +10,42 @@ import {
   quizesExternalResolver,
   quizesDataResolver,
   quizesPatchResolver,
-  quizesQueryResolver
+  quizesQueryResolver,
+  quizesDataSchema,
+  quizesQuerySchema,
+  quizesSchema
 } from './quizes.schema'
 
 import type { Application } from '../../declarations'
 import { QuizesService, getOptions } from './quizes.class'
 import { quizesPath, quizesMethods } from './quizes.shared'
 
+// Import feathers-swagger utility
+import { createSwaggerServiceOptions } from 'feathers-swagger';
+
 export * from './quizes.class'
 export * from './quizes.schema'
 
 // A configure function that registers the service and its hooks via `app.configure`
 export const quizes = (app: Application) => {
-  // Register our service on the Feathers application
+  // Register our service on the Feathers application with Swagger documentation
   app.use(quizesPath, new QuizesService(getOptions(app)), {
     // A list of all methods this service exposes externally
     methods: quizesMethods,
     // You can add additional custom events to be sent to clients here
-    events: []
+    events: [],
+    // Add Swagger documentation for this service
+    docs: createSwaggerServiceOptions({
+      schemas: { 
+        quizesDataSchema, 
+        quizesQuerySchema, 
+        quizesSchema 
+      },
+      docs: {
+        description: 'Quiz management service',
+        securities: ['all'],
+      }
+    })
   })
   // Initialize hooks
   app.service(quizesPath).hooks({

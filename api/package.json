@@ -1,7 +1,7 @@
 {
-  "name": "api",
+  "name": "@content2quiz/api",
   "description": "QuizFromContent",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "homepage": "",
   "private": true,
   "keywords": [
@@ -57,11 +57,15 @@
     "@feathersjs/socketio": "^5.0.37",
     "@feathersjs/transport-commons": "^5.0.37",
     "@feathersjs/typebox": "^5.0.37",
+    "@koa/router": "^14.0.0",
     "feathers-swagger": "^3.0.0",
     "knex": "^3.1.0",
+    "koa-mount": "^4.2.0",
+    "koa-static": "^5.0.0",
     "koa2-swagger-ui": "^5.12.0",
     "pg": "^8.16.3",
     "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-dist": "^5.30.2",
     "winston": "^3.18.3"
   },
   "devDependencies": {

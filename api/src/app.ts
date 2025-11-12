@@ -11,10 +11,26 @@ import { postgresql } from './postgresql'
 import { services } from './services/index'
 import { channels } from './channels'
 
+// Import feathers-swagger
+import swagger from 'feathers-swagger'
+
 const app: Application = koa(feathers())
 
 // Load our app configuration (see config/ folder)
 app.configure(configuration(configurationValidator))
+
+// Configure feathers-swagger BEFORE services are registered
+app.configure(swagger({
+  specs: {
+    info: {
+      title: 'QuizFromContent API',
+      description: 'API for quiz content management',
+      version: '1.0.0',
+    },
+  },
+  // Enable Swagger UI
+  ui: swagger.swaggerUI({ docsPath: '/docs' })
+}))
 
 // Set up Koa middleware
 app.use(cors())

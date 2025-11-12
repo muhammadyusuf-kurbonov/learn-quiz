@@ -41,12 +41,21 @@ importers:
       '@feathersjs/typebox':
         specifier: ^5.0.37
         version: 5.0.37(typescript@5.9.3)
+      '@koa/router':
+        specifier: ^14.0.0
+        version: 14.0.0
       feathers-swagger:
         specifier: ^3.0.0
         version: 3.0.0
       knex:
         specifier: ^3.1.0
         version: 3.1.0(pg@8.16.3)
+      koa-mount:
+        specifier: ^4.2.0
+        version: 4.2.0
+      koa-static:
+        specifier: ^5.0.0
+        version: 5.0.0
       koa2-swagger-ui:
         specifier: ^5.12.0
         version: 5.12.0(@types/koa@3.0.1)
@@ -56,6 +65,9 @@ importers:
       swagger-jsdoc:
         specifier: ^6.2.8
         version: 6.2.8(openapi-types@12.1.3)
+      swagger-ui-dist:
+        specifier: ^5.30.2
+        version: 5.30.2
       winston:
         specifier: ^3.18.3
         version: 3.18.3
@@ -417,6 +429,10 @@ packages:
     resolution: {integrity: sha512-x/iUDjcS90W69PryLDIMgFyV21YLTnG9zOpPXS7Bkt2b8AsY3zZsIpOLBkYr9fBcF3HbkKaER5hOBZLfpLgYNw==}
     engines: {node: '>= 14.0.0'}
 
+  '@koa/router@14.0.0':
+    resolution: {integrity: sha512-LBSu5K0qAaaQcXX/0WIB9PGDevyCxxpnc1uq13vV/CgObaVxuis5hKl3Eboq/8gcb6ebnkAStW9NB/Em2eYyFA==}
+    engines: {node: '>= 20'}
+
   '@noble/hashes@1.8.0':
     resolution: {integrity: sha512-jCs9ldd7NwzpgXDIf6P3+NrHh9/sD6CQdxHyjQI+h/6rDNo88ypBxxz45UDuZHz9r3tNz7N/VInSVoVdtXEI4A==}
     engines: {node: ^14.21.3 || >=16}
@@ -439,6 +455,9 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@scarf/scarf@1.4.0':
+    resolution: {integrity: sha512-xxeapPiUXdZAE3che6f3xogoJPeZgig6omHEy1rIY5WVsB3H2BHNnZH+gHG6x91SCWyQCzWGsuL2Hh3ClO5/qQ==}
 
   '@sinclair/typebox@0.25.24':
     resolution: {integrity: sha512-XJfwUVUKDHF5ugKwIcxEgc9k8b7HbznCp6eUfWgu710hMPNIO4aw4/zB5RogDQz8nd6gyCDpU9O/m6qYEWY6yQ==}
@@ -1335,6 +1354,10 @@ packages:
   koa-compose@4.1.0:
     resolution: {integrity: sha512-8ODW8TrDuMYvXRwra/Kh7/rJo9BtOfPc6qO8eAfC80CnCvSjSl0bkRM24X6/XBBEyj0v1nRUQ1LyOy3dbqOWXw==}
 
+  koa-mount@4.2.0:
+    resolution: {integrity: sha512-2iHQc7vbA9qLeVq5gKAYh3m5DOMMlMfIKjW/REPAS18Mf63daCJHHVXY9nbu7ivrnYn5PiPC4CE523Tf5qvjeQ==}
+    engines: {node: '>= 7.6.0'}
+
   koa-qs@3.0.0:
     resolution: {integrity: sha512-05IB5KirwMs3heWW26iTz46HuMAtrlrRMus/aNH1BRDocLyF/099EtCB0MIfQpRuT0TISvaTsWwSy2gctIWiGA==}
     engines: {node: '>= 8'}
@@ -1606,6 +1629,9 @@ packages:
   path-scurry@1.11.1:
     resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
     engines: {node: '>=16 || 14 >=14.18'}
+
+  path-to-regexp@8.3.0:
+    resolution: {integrity: sha512-7jdwVIRtsP8MYpdXSwOS0YdD0Du+qOoF/AEPIt88PcCFrZCzx41oxku1jD88hZBwbNUIEfpqvuhjFaMAqMTWnA==}
 
   pg-cloudflare@1.2.7:
     resolution: {integrity: sha512-YgCtzMH0ptvZJslLM1ffsY4EuGaU0cx4XSdXLRFae8bPP4dS5xL1tNB3k2o/N64cHJpwU7dxKli/nZ2lUa5fLg==}
@@ -1943,6 +1969,9 @@ packages:
   swagger-parser@10.0.3:
     resolution: {integrity: sha512-nF7oMeL4KypldrQhac8RyHerJeGPD1p2xDh900GPvc+Nk7nWP6jX2FcC7WmkinMoAmoO774+AFXcWsW8gMWEIg==}
     engines: {node: '>=10'}
+
+  swagger-ui-dist@5.30.2:
+    resolution: {integrity: sha512-HWCg1DTNE/Nmapt+0m2EPXFwNKNeKK4PwMjkwveN/zn1cV2Kxi9SURd+m0SpdcSgWEK/O64sf8bzXdtUhigtHA==}
 
   tarn@3.0.2:
     resolution: {integrity: sha512-51LAVKUSZSVfI05vjPESNc5vwqqZpbXCsU+/+wxlOrUjk2SnFTt97v9ZgQrD4YmxYW1Px6w2KjaDitCfkvgxMQ==}
@@ -2475,6 +2504,15 @@ snapshots:
     dependencies:
       vary: 1.1.2
 
+  '@koa/router@14.0.0':
+    dependencies:
+      debug: 4.4.3
+      http-errors: 2.0.0
+      koa-compose: 4.1.0
+      path-to-regexp: 8.3.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@noble/hashes@1.8.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -2495,6 +2533,8 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
+
+  '@scarf/scarf@1.4.0': {}
 
   '@sinclair/typebox@0.25.24': {}
 
@@ -3421,6 +3461,13 @@ snapshots:
 
   koa-compose@4.1.0: {}
 
+  koa-mount@4.2.0:
+    dependencies:
+      debug: 4.4.3
+      koa-compose: 4.1.0
+    transitivePeerDependencies:
+      - supports-color
+
   koa-qs@3.0.0:
     dependencies:
       merge-descriptors: 1.0.3
@@ -3705,6 +3752,8 @@ snapshots:
     dependencies:
       lru-cache: 10.4.3
       minipass: 7.1.2
+
+  path-to-regexp@8.3.0: {}
 
   pg-cloudflare@1.2.7:
     optional: true
@@ -4046,6 +4095,10 @@ snapshots:
       '@apidevtools/swagger-parser': 10.0.3(openapi-types@12.1.3)
     transitivePeerDependencies:
       - openapi-types
+
+  swagger-ui-dist@5.30.2:
+    dependencies:
+      '@scarf/scarf': 1.4.0
 
   tarn@3.0.2: {}
 
