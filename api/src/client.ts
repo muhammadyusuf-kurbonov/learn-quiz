@@ -4,6 +4,14 @@ import type { TransportConnection, Application } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
 
+import { generateQuizClient } from './services/generate-quiz/generate-quiz.shared'
+export type {
+  GenerateQuiz,
+  GenerateQuizData,
+  GenerateQuizQuery,
+  GenerateQuizPatch
+} from './services/generate-quiz/generate-quiz.shared'
+
 import { quizesClient } from './services/quizes/quizes.shared'
 export type { Quizes, QuizesData, QuizesQuery, QuizesPatch } from './services/quizes/quizes.shared'
 
@@ -34,5 +42,6 @@ export const createClient = <Configuration = any,>(
   client.set('connection', connection)
 
   client.configure(quizesClient)
+  client.configure(generateQuizClient)
   return client
 }

@@ -12,5 +12,8 @@
   "postgresql": {
     "client": "pg",
     "connection": "postgres://postgres:@localhost:5432/api"
+  },
+  "openrouter": {
+    "apiKey": "OPENROUTER_KEY"
   }
 }

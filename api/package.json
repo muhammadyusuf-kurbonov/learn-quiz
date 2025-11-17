@@ -58,6 +58,7 @@
     "@feathersjs/transport-commons": "^5.0.37",
     "@feathersjs/typebox": "^5.0.37",
     "@koa/router": "^14.0.0",
+    "@openrouter/ai-sdk-provider": "^1.2.3",
     "feathers-swagger": "^3.0.0",
     "knex": "^3.1.0",
     "koa-mount": "^4.2.0",

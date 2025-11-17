@@ -1,0 +1,2 @@
+overrides:
+  '@content2quiz/api': link:../../../../.local/share/pnpm/global/5/node_modules/@content2quiz/api
