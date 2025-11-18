@@ -1,19 +1,28 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/client.html
-import { feathers } from '@feathersjs/feathers'
-import type { TransportConnection, Application } from '@feathersjs/feathers'
-import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
+
+import { quizQuestionsClient } from './services/quiz-questions/quiz-questions.shared'
+export type {
+  QuizQuestions,
+  QuizQuestionsData,
+  QuizQuestionsQuery,
+  QuizQuestionsPatch
+} from './services/quiz-questions/quiz-questions.shared'
+
+import { quizesClient } from './services/quizes/quizes.shared'
+export type { Quizes, QuizesData, QuizesQuery, QuizesPatch } from './services/quizes/quizes.shared'
+
+import authenticationClient from '@feathersjs/authentication-client'
+import type { Application, TransportConnection } from '@feathersjs/feathers'
+import { feathers } from '@feathersjs/feathers'
 
 import { generateQuizClient } from './services/generate-quiz/generate-quiz.shared'
 export type {
   GenerateQuiz,
   GenerateQuizData,
-  GenerateQuizQuery,
-  GenerateQuizPatch
+  GenerateQuizPatch,
+  GenerateQuizQuery
 } from './services/generate-quiz/generate-quiz.shared'
-
-import { quizesClient } from './services/quizes/quizes.shared'
-export type { Quizes, QuizesData, QuizesQuery, QuizesPatch } from './services/quizes/quizes.shared'
 
 export interface Configuration {
   connection: TransportConnection<ServiceTypes>
@@ -41,7 +50,8 @@ export const createClient = <Configuration = any,>(
   client.configure(authenticationClient(authenticationOptions))
   client.set('connection', connection)
 
-  client.configure(quizesClient)
   client.configure(generateQuizClient)
+  client.configure(quizesClient)
+  client.configure(quizQuestionsClient)
   return client
 }
