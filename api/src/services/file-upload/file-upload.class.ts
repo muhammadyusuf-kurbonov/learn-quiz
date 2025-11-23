@@ -1,42 +1,38 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.class.html#custom-services
-import type { Params, ServiceInterface } from '@feathersjs/feathers'
-import type { Application } from '../../declarations'
+import feathersBlob from 'feathers-blob';
+import FSBlobStore from 'fs-blob-store';
+import type { Application } from '../../declarations';
 import {
   type FileUpload,
   type FileUploadData,
   type FileUploadPatch,
   type FileUploadQuery
-} from './file-upload.schema'
-import { join } from 'path'
+} from './file-upload.schema';
+import { join } from 'path';
 
-export type { FileUpload, FileUploadData, FileUploadPatch, FileUploadQuery }
+export type { FileUpload, FileUploadData, FileUploadPatch, FileUploadQuery };
 
-export interface FileUploadServiceOptions {
-  app: Application
-  uploadDir?: string
-}
-
-export interface FileUploadParams extends Params<FileUploadQuery> {}
+export type FileUploadService = ReturnType<typeof feathersBlob>;
 
 // This service handles file uploads
-export class FileUploadService<ServiceParams extends FileUploadParams = FileUploadParams>
-  implements ServiceInterface<FileUpload, FileUploadData, ServiceParams, FileUploadPatch>
-{
-  app: Application
-  uploadDir: string
-
-  constructor(public options: FileUploadServiceOptions) {
-    this.app = options.app
-    this.uploadDir = options.uploadDir || join(process.cwd(), 'public', 'uploads')
-  }
-
-  async create(data: FileUploadData, params?: ServiceParams): Promise<FileUpload> {
-    // The actual file data is already processed by the handleFileUpload hook
-    // This method just returns the processed result
-    return (params as any).fileInfo || data as any;
-  }
-}
-
 export const getOptions = (app: Application) => {
-  return { app, uploadDir: join(app.get('public'), 'uploads') }
+  const storage = app.get('storage').driver;
+  const path = join(process.cwd(), app.get('storage').directory || './uploads');
+
+  let store;
+
+  switch (storage) {
+    case 'local':
+      store = FSBlobStore(path);
+      break;
+    default:
+      store = FSBlobStore(path);
+      break;
+  }
+
+  return {
+    Model: store,
+    returnBuffer: false,
+    returnUri: false,
+  } satisfies feathersBlob.InitOptions
 }

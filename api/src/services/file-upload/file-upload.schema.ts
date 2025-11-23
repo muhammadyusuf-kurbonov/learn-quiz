@@ -28,9 +28,7 @@ export const fileUploadExternalResolver = resolve<FileUpload, HookContext<FileUp
 
 // Schema for creating new entries
 export const fileUploadDataSchema = Type.Object(
-  {
-    file: Type.Object({}) // This will be handled by middleware
-  },
+  {},
   { $id: 'FileUploadData' }
 )
 export type FileUploadData = Static<typeof fileUploadDataSchema>

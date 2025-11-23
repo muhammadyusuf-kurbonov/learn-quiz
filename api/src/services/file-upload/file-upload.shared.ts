@@ -12,7 +12,7 @@ import type {
 export type { FileUpload, FileUploadData, FileUploadPatch, FileUploadQuery }
 
 export type FileUploadClientService = Pick<
-  FileUploadService<Params<FileUploadQuery>>,
+  FileUploadService,
   (typeof fileUploadMethods)[number]
 >
 

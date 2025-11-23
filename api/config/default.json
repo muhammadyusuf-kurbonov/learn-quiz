@@ -13,6 +13,10 @@
     "client": "pg",
     "connection": "postgres://postgres:@localhost:5432/api"
   },
+  "storage": {
+    "driver": "local",
+    "directory": "uploads"
+  },
   "openrouter": {
     "apiKey": "OPENROUTER_KEY"
   }

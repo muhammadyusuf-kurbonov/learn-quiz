@@ -1,51 +1,106 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.html
-import { authenticate } from '@feathersjs/authentication'
 
 import { hooks as schemaHooks } from '@feathersjs/schema'
 
 import {
-  fileUploadDataValidator,
-  fileUploadPatchValidator,
-  fileUploadQueryValidator,
-  fileUploadResolver,
-  fileUploadExternalResolver,
   fileUploadDataResolver,
-  fileUploadPatchResolver,
-  fileUploadQueryResolver
+  fileUploadDataValidator,
+  fileUploadExternalResolver,
+  fileUploadQueryResolver,
+  fileUploadQueryValidator,
+  fileUploadResolver
 } from './file-upload.schema'
 
-import type { Application } from '../../declarations'
-import { FileUploadService, getOptions } from './file-upload.class'
-import { fileUploadPath, fileUploadMethods } from './file-upload.shared'
 import { createSwaggerServiceOptions } from 'feathers-swagger'
-import { handleFileUpload } from '../../hooks/handle-file-upload'
+import type { Application } from '../../declarations'
+import { FileUploadQuery, getOptions } from './file-upload.class'
+import { fileUploadMethods, fileUploadPath } from './file-upload.shared'
 
-export * from './file-upload.class'
 export * from './file-upload.schema'
 
+import feathersBlob from 'feathers-blob'
 import {
   fileUploadDataSchema,
-  fileUploadSchema,
   fileUploadPatchSchema,
-  fileUploadQuerySchema
-} from './file-upload.schema';
+  fileUploadQuerySchema,
+  fileUploadSchema
+} from './file-upload.schema'
+import multer from '@koa/multer'
+import { debug, setField } from 'feathers-hooks-common'
+import { FeathersKoaContext } from '@feathersjs/koa'
+import { Params } from '@feathersjs/feathers'
 
 // A configure function that registers the service and its hooks via `app.configure`
 export const fileUpload = (app: Application) => {
-  // Register our service on the Feathers application
-  app.use(fileUploadPath, new FileUploadService(getOptions(app)), {
+  // Get options based on app configuration
+  const options = getOptions(app)
+
+  const multipart = multer({
+    limits: {
+      fileSize: 10 * 1024 * 1024 // 10MB
+    },
+  })
+  const multipartMiddleware = multipart.any()
+
+  // Create and register our file upload service on the Feathers application
+  app.use(fileUploadPath, feathersBlob(options), {
     // A list of all methods this service exposes externally
     methods: fileUploadMethods,
     // You can add additional custom events to be sent to clients here
     events: [],
+    koa: {
+      before: [
+        multipartMiddleware,
+        async (ctx: FeathersKoaContext<Application>, next) => {
+          console.log(ctx.files, ctx.file);
+          ctx.feathers = {
+            ...ctx.feathers,
+            // @ts-expect-error Type definition error
+            files: ctx.files,
+          };
+          await next();
+        },
+      ]
+    },
     docs: createSwaggerServiceOptions({
       schemas: {
-          fileUploadDataSchema,
-          fileUploadSchema,
-          fileUploadPatchSchema,
-          fileUploadQuerySchema
+        fileUploadDataSchema,
+        fileUploadSchema,
+        fileUploadPatchSchema,
+        fileUploadQuerySchema
       },
-    }),
+      docs: {
+        operations: {
+          create: {
+            description: 'Upload a file',
+            parameters: [
+              {
+                name: 'file',
+                in: 'formData',
+                description: 'File to upload',
+                required: true,
+                type: 'file'
+              }
+            ],
+            requestBody: {
+              content: {
+                'multipart/form-data': {
+                  schema: {
+                    type: 'object',
+                    properties: {
+                      file: {
+                        type: 'string',
+                        format: 'binary'
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    })
   })
   // Initialize hooks
   app.service(fileUploadPath).hooks({
@@ -62,10 +117,21 @@ export const fileUpload = (app: Application) => {
         schemaHooks.resolveQuery(fileUploadQueryResolver)
       ],
       create: [
-        handleFileUpload(), // Handle file upload before validation
-        schemaHooks.validateData(fileUploadDataValidator),
+        async (ctx) => {
+          if (ctx.data?.buffer) {
+            return;
+          }
+
+          const dataArray = ctx.params.files
+            .map((file: multer.File) => ({ buffer: file.buffer, contentType: file.mimetype }));
+
+          ctx.result = await Promise
+            .all(dataArray.map((data: { buffer: Buffer, contentType: string }) => ctx.service.create(data, ctx.params)));
+        },
+        debug('before upload'),
+        // Skip data validation for file upload as it's handled by middleware
         schemaHooks.resolveData(fileUploadDataResolver)
-      ],
+      ]
     },
     after: {
       all: []
@@ -79,6 +145,6 @@ export const fileUpload = (app: Application) => {
 // Add this service to the service type index
 declare module '../../declarations' {
   interface ServiceTypes {
-    [fileUploadPath]: FileUploadService
+    [fileUploadPath]: ReturnType<typeof feathersBlob>
   }
 }
