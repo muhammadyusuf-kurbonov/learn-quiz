@@ -11,7 +11,8 @@ import type { GenerateQuizService } from './generate-quiz.class'
 export const generateQuizSchema = Type.Object(
   {
     id: Type.Number(),
-    fileId: Type.String(),
+    content: Type.String(),
+    fileId: Type.Optional(Type.String()),
     responseTxt: Type.String(),
   },
   { $id: 'GenerateQuiz', additionalProperties: false }
@@ -23,9 +24,13 @@ export const generateQuizResolver = resolve<GenerateQuizQuery, HookContext<Gener
 export const generateQuizExternalResolver = resolve<GenerateQuiz, HookContext<GenerateQuizService>>({})
 
 // Schema for creating new entries
-export const generateQuizDataSchema = Type.Pick(generateQuizSchema, ['fileId'], {
-  $id: 'GenerateQuizData'
-})
+export const generateQuizDataSchema = Type.Object(
+  {
+    content: Type.String(), // Text content to generate quiz from
+    fileId: Type.Optional(Type.String()) // Optional file ID for tracking
+  },
+  { $id: 'GenerateQuizData' }
+)
 export type GenerateQuizData = Static<typeof generateQuizDataSchema>
 export const generateQuizDataValidator = getValidator(generateQuizDataSchema, dataValidator)
 export const generateQuizDataResolver = resolve<GenerateQuizData, HookContext<GenerateQuizService>>({})

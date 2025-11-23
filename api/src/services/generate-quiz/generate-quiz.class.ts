@@ -1,7 +1,6 @@
 // For more information about this file see https://dove.feathersjs.com/guides/cli/service.class.html#custom-services
 import type { Params, ServiceInterface } from '@feathersjs/feathers'
 import { createOpenRouter, OpenRouterProvider } from '@openrouter/ai-sdk-provider'
-import { readFile } from 'fs/promises'
 import type { Application } from '../../declarations'
 import {
   type GenerateQuiz,
@@ -18,7 +17,7 @@ export interface GenerateQuizServiceOptions {
 
 export interface GenerateQuizParams extends Params<GenerateQuizQuery> {}
 
-// This is a skeleton for a custom service class. Remove or add the methods you need here
+// This is a service class that generates quizzes from text content using an LLM
 export class GenerateQuizService<ServiceParams extends GenerateQuizParams = GenerateQuizParams>
   implements ServiceInterface<GenerateQuiz, GenerateQuizData, ServiceParams, GenerateQuizPatch>
 {
@@ -38,9 +37,10 @@ export class GenerateQuizService<ServiceParams extends GenerateQuizParams = Gene
       return Promise.all(data.map(current => this.create(current, params)))
     }
 
-
     const model = this.provider.languageModel('qwen3:8b');
-    const testData = await readFile('test-data.md', { encoding: 'utf-8' });
+
+    // Use the content provided in the request instead of reading from file
+    const content = data.content;
 
     const stream = await model.doStream({
       abortSignal: this.controller.signal,
@@ -48,13 +48,13 @@ export class GenerateQuizService<ServiceParams extends GenerateQuizParams = Gene
         {
           role: 'system',
           content:
-            '/no_think You are expert examinator. You task is to generate quiz questions - Multiple choice test questions. No need for explanation - just call tools! Only tool calls allowed',
+            '/no_think You are expert examinator. Your task is to generate quiz questions - Multiple choice test questions. No need for explanation - just call tools! Only tool calls allowed',
         },
         {
           role: 'user',
           content: [
             { text: 'Generate at least 10! tests only for this text:', type: 'text' },
-            { text: testData, type: 'text' },
+            { text: content, type: 'text' },
           ],
         },
       ],
@@ -169,9 +169,10 @@ export class GenerateQuizService<ServiceParams extends GenerateQuizParams = Gene
 
     return {
       id: 0,
-      ...data,
+      content: data.content.substring(0, 100) + '...', // Store only a preview to avoid large payloads
+      fileId: data.fileId,
       responseTxt,
-    }
+    };
   }
 
   async teardown(app: Application, path: string): Promise<void> {

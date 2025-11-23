@@ -59,15 +59,20 @@
     "@feathersjs/typebox": "^5.0.37",
     "@koa/router": "^14.0.0",
     "@openrouter/ai-sdk-provider": "^1.2.3",
+    "@types/formidable": "^3.4.6",
     "feathers-swagger": "^3.0.0",
+    "formidable": "^3.5.4",
     "knex": "^3.1.0",
     "koa-mount": "^4.2.0",
     "koa-static": "^5.0.0",
     "koa2-swagger-ui": "^5.12.0",
+    "mammoth": "^1.11.0",
+    "pdf-parse": "^2.4.5",
     "pg": "^8.16.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-dist": "^5.30.2",
-    "winston": "^3.18.3"
+    "winston": "^3.18.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@feathersjs/authentication": "^5.0.37",

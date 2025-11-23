@@ -27,7 +27,7 @@
                   <p class="text-lg text-slate-800">Take the quiz and see your results</p>
                 </li>
               </ul>
-              <div class="mt-10">
+              <div class="mt-10 mx-auto">
                 <NuxtLink to="/upload" class="inline-block px-8 py-4 bg-linear-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                   Get Started
                 </NuxtLink>
