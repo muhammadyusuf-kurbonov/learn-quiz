@@ -120,3 +120,8 @@ dist
 
 lib/
 uploads/
+
+# machine-local node-config overrides (contain API keys)
+config/fedora.json
+config/local*.json
+config/*-local.json
